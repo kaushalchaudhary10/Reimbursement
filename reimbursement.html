@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Reimbursement Form</title>
+	<style type="text/css"> 
+        .hide { 
+            display: none; 
+        }
+    </style> 
+    <script type="text/javascript"> 
+            function Conveyance(){
+            	if (document.getElementById('Conveyance').checked) {
+  					document.getElementById('Conveyance').style.display ='visible';
+  				}else{
+  					document.getElementById('Conveyance').style.display ='hidden';
+  				}
+			}
+			function Hotel(){
+  				if (document.getElementById('Hotel').checked) {
+  					document.getElementById('Hotel').style.display ='visible';
+  				}else{
+  					document.getElementById('Hotel').style.display ='hidden';
+  				}
+			}
+			function Food(){
+  				if (document.getElementById('Food').checked) {
+  					document.getElementById('Food').style.display ='visible';
+  				}else{
+  					document.getElementById('Food').style.display ='hidden';
+  				}
+			}
+			function Mobile(){
+  				if (document.getElementById('Mobile').checked) {
+  					document.getElementById('Mobile').style.display ='visible';
+  				}else{
+  					document.getElementById('Mobile').style.display ='hidden';
+  				}
+			}
+			function Internet(){
+  				if (document.getElementById('Internet').checked) {
+  					document.getElementById('Internet').style.display ='visible';
+  				}else{
+  					document.getElementById('Internet').style.display ='hidden';
+  				}
+			}
+			function Others(){
+  				if (document.getElementById('Others').checked) {
+  					document.getElementById('Others').style.display ='visible';
+  				}else{
+  					document.getElementById('Others').style.display ='hidden';
+  				}
+			}
+        </script> 
+</head>
+<body>
+	<center>
+		<p> Reimbursement Form </p>
+		<form action="" method="POST">
+			<div>
+				<label> Select Month</label>
+				<input type="month" id="start" name="start" min="2020-01" value="2020-05">
+			</div>
+			<div>
+				<input type="radio" id="Conveyance" name="reimbursementType" value="Conveyance" onclick ="Conveyance();">
+	  			<label for="Conveyance">Conveyance</label>
+	  			<input type="radio" id="Hotel" name="reimbursementType" value="Hotel" onclick="Hotel();">
+	  			<label for="Hotel">Hotel</label>
+	  			<input type="radio" id="Food" name="reimbursementType" value="Food" onclick="Food();">
+	  			<label for="Food">Food</label><br>
+	  			<input type="radio" id="Mobile" name="reimbursementType" value="Mobile" onclick="Mobile();">
+	  			<label for="Mobile">Mobile</label>
+	  			<input type="radio" id="Internet" name="reimbursementType" value="Internet" onclick="Internet();">
+	  			<label for="Internet">Internet</label>
+	  			<input type="radio" id="Others" name="reimbursementType" value="Others" onclick="Others();">
+	  			<label for="Others">Others</label>
+			</div>
+			<div id="Conveyance" style="display:none"> 
+          		<label> From</label>
+          		<input type="" name="">
+          		<label>To</label>
+          		<input type="" name="">
+          		<label>Purpose</label>
+          		<input type="option" name="">
+          		<label>Mode</label>
+          		<input type="option" name=""><br>
+          		<label>Km</label>
+          		<input type="text" name="">
+          		<label>InvNo</label>
+          		<input type="text" name="">
+          		<label>Amt</label>
+          		<input type="text" name="">
+          		<label>Attachement</label>
+          		<input type="file" name="file" id="file">
+          	</div> 
+          	<div id="Hotel" style="display:none"> 
+          		<label> From Date</label>
+          		<input type="" name="">
+          		<label>To Date</label>
+          		<input type="" name="">
+          		<label>Hotel Name</label>
+          		<input type="text" name="">
+          		<label>InvNo</label>
+          		<input type="text" name="">
+          		<label>Amt</label>
+          		<input type="text" name="">
+          		<label>Attachement</label>
+          		<input type="file" name="file" id="file">
+          	</div> 
+          	<div id="Food" style="display:none" class="hide"> 
+          		<label>InvNo</label>
+          		<input type="text" name="">
+          		<label>Amt</label>
+          		<input type="text" name="">
+          		<label>Attachement</label>
+          		<input type="file" name="file" id="file">
+          	</div> 
+          	<div id="Mobile" style="display:none" class="hide"> 
+          		<label>InvNo</label>
+          		<input type="text" name="">
+          		<label>Amt</label>
+          		<input type="text" name="">
+          		<label>Attachement</label>
+          		<input type="file" name="file" id="file">
+          	</div> 
+          	<div id="Internet" style="display:none" class="hide"> 
+          		<label>InvNo</label>
+          		<input type="text" name="">
+          		<label>Amt</label>
+          		<input type="text" name="">
+          		<label>Attachement</label>
+          		<input type="file" name="file" id="file">
+          	</div> 
+          	<div id="Others" style="display:none" class="hide"> 
+          		<label> From Date</label>
+          		<input type="" name="">
+          		<label>To Date</label>
+          		<input type="" name="">
+          		<label>Description</label>
+          		<input type="text" name="">
+          		<label>InvNo</label>
+          		<input type="text" name="">
+          		<label>Amt</label>
+          		<input type="text" name="">
+          		<label>Attachement</label>
+          		<input type="file" name="file" id="file">
+          	</div> 
+		</form>
+		
+	</center>
+</body>
+</html>
