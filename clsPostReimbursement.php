@@ -9,66 +9,92 @@ Version     : 1.0
 CreationDate: 29th May, 2020 
 ******************************************************************************************/
 	
-   require_once 'config/localConfig.php';
+  require_once 'config/localConfig.php';
 
+  $selectQuery = $tableName = $errMessage = '';
+  $arrRequiredField = $arrRequiredValue = array();
 
-   
-	// if(isset($_POST['data'])) {
-
-   	  $selectQuery = $tableName = '';
+	if(isset($_POST['btnsubmit'])) {
 
    	  // check connection
       if(!$conn){
         die('Could not Connect My Sql:' .mysqli_error());
 	  }
-	  	
-	  // escaping the special character passed by user
-	  // if(isset($_POST['tableName'])) {
-	  	$tableName = mysqli_real_escape_string($conn, $tableName);
-	  	$tableName = "Conveyance";
+	  
+	  // checking isset tableName
+	  if(isset($_POST['tableName'])) {
+
+	  	// escaping the special character passed by user
+	  	$tableName = mysqli_real_escape_string($conn, $_POST['tableName']);
+
+	  	// based on table Name getting the Required feild to form the query
 	  	switch($tableName) {
-	  		case "Conveyance" :
-	  		$arrRequiredField = array('Conveyance_strID', 'Conveyance_dtmFrom', 'Conveyance_dtmTo',
-	  			'Conveyance_strpurpose', 'Conveyance_strmode', 'Conveyance_intKM', 'Conveyance_strInvoiceNumber', 'Conveyance_mnyAmout', 'Conveyance_strAttachment', 'Conveyance_strShortDesc');
+	  	  case "Conveyance" :
+	  		$arrRequiredField = 
+	  		array('Conveyance_dtmFrom', 'Conveyance_dtmTo','Conveyance_strpurpose', 
+	  		'Conveyance_strmode', 'Conveyance_intKM', 'Conveyance_strInvoiceNumber', 
+	  		'Conveyance_mnyAmout', 'Conveyance_strAttachment', 'Conveyance_strShortDesc');
+	  	  break;
 
-	  		break;
+	  	  case "Hotel" :
+	  		$arrRequiredField = 
+	  		array('Hotel_dtmFrom', 'Hotel_dtmTo', 'Hotel_strHotelName', 'Hotel_strInvoiceNumber', 
+	  		'Hotel_mnyAmout', 'Hotel_strAttachment');
+	  	  break;
 
-	  		case "Hotel" :
-	  		$arrRequiredField = array('Hotel_strID', 'Hotel_dtmFrom', 'Hotel_dtmTo',
-	  			'Hotel_strHotelName', 'Hotel_strInvoiceNumber', 'Hotel_mnyAmout', 'Hotel_strAttachment');
-	  		break;
+	  	  case "Food" :
+	  		$arrRequiredField = 
+	  		array('Food_strInvoiceNumber', 'Food_mnyAmout', 'Food_strAttachment');
+	  	  break;
 
-	  		case "Food" :
-	  		$arrRequiredField = array('Food_strID', 'Food_dtmFrom', 'Food_dtmTo',
-	  			'Food_strInvoiceNumber', 'Food_mnyAmout', 'Food_strAttachment');
-	  		break;
+	  	  case "Mobile" :
+	  		$arrRequiredField = 
+	  		array('Mobile_strInvoiceNumber', 'Mobile_mnyAmout', 'Mobile_strAttachment');
+	  	  break;
 
-	  		case "Mobile" :
-	  		$arrRequiredField = array(`Mobile_strID`, `Mobile_dtmFrom`, `Mobile_dtmTo`, `Mobile_strInvoiceNumber`, `Mobile_mnyAmout`, `Mobile_strAttachment`);
-	  		break;
+	  	  case "Internet" :
+	  		$arrRequiredField = 
+	  		array('Internet_strInvoiceNumber', 'Internet_mnyAmout', 'Internet_strAttachment');
+	  	  break;
 
-	  		case "Internet" :
-	  		$arrRequiredField = array(`Internet_strID`, `Internet_dtmFrom`, `Internet_dtmTo`, `Internet_strInvoiceNumber`, `Internet_mnyAmout`, `Internet_strAttachment`);
-	  		break;
-
-	  		case "Others" :
-	  		$arrRequiredField = array(`Others_strID`, `Others_dtmFrom`, `Others_dtmTo`, `Others_strDescription`, `Others_strInvoiceNumber`, `Others_mnyAmout`, `Others_strAttachment`);
-	  		break;
+	  	  case "Others" :
+	  		$arrRequiredField = 
+	  		array('Others_dtmFrom', 'Others_dtmTo', 'Others_strDescription', 
+	  		'Others_strInvoiceNumber', 'Others_mnyAmout', 'Others_strAttachment');
+	  	  break;
 	  	}
+
+	  	// escaping the special character enter by user and validation
 	  	foreach($arrRequiredField as $columnName) {
-	  		$arrRequiredValue[] = mysqli_real_escape_string($conn, $_POST[$columnName]);
+	  	  $columnName = mysqli_real_escape_string($conn, $columnName);
+	  	  if(stripos($columnName, '_int') !== false || stripos($columnName, '_mny') !== false) {
+	  	  	$intValue = cleanInteger($_POST[$columnName]);
+            $arrRequiredValue[$columnName] = $intValue;
+          }else{
+            $arrRequiredValue[str_replace(' ', '', $columnName)] = 
+            "'" . addslashes($_POST[$columnName]) . "'";
+          }
 	  	}
-	  	$selectQuery = "INSERT INTO tbl{$tableName} (" . implode(",", $arrRequiredField) . ") VALUES( ". implode(",", $arrRequiredValue). ");";
+	  	// form the insert Query
+	  	$insertQuery = "INSERT INTO tbl{$tableName} (" . implode(",", $arrRequiredField). ") VALUES( ". implode(",", array_values($arrRequiredValue)). ");";
       	
-	  // }
+	  }
+      // save data to db and check
+  	  if(mysqli_query($conn, $insertQuery)) {
+  	  	$errMessage = 'Data Inserted Successully';
+  	  }else {
+  	  	$errMessage = 'Query error . ' . mysqli_error($conn);
+  	  }
 
-      	// Execute the select query for selected Conveyance Type
-  	  	$result = $conn->query($selectQuery);
-  	  	
-  	  	$getConveyance = $result->fetch_all(MYSQLI_ASSOC);
-  	  	echo "importing data from tbl{$tableName} <br />";
-  	  	print_r($getConveyance);
-  	  	mysqli_free_result($result);
-  	  	// mysqli_close();
-	// }
+  	  return $errMessage;
+	}
+
+  // if dataType is int, and value is blank then it should be null instead of emmpty
+  function cleanInteger($str) {
+    if(strlen($str) < 1) {
+      return 'null';
+    }else{
+      return $str;
+    }
+  }
 ?>

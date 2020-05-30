@@ -1,7 +1,7 @@
 <?php 
 	
 	// Database name
-	$database_name = 'Reimbursement';
+	$database_name = 'reimbursement';
 	//folder path
 	$GLOBALS['dir_path'] = dirname(dirname(__FILE__));
 	// Connection string
